@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, Card, CardContent, TextField, Button, Box, Avatar } from "@mui/material";
+import { AppBar, Toolbar, Typography, TextField, Button, Box, Grid, Link, Paper, CircularProgress } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";  
 
 export default function App() {
-
   const navigate = useNavigate(); 
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -25,83 +34,114 @@ export default function App() {
     },
   });
 
+  if (loading) {
+    return (
+      <Box 
+        sx={{ 
+          display: "flex", 
+          justifyContent: "center", 
+          alignItems: "center", 
+          height: "100vh", 
+          backgroundColor: "#ECECEE" 
+        }}
+      >
+        <CircularProgress size={60} thickness={5} />
+      </Box>
+    );
+  }
+
   return (
-    <div className="min-h-screen" style={{ backgroundImage: "url('/src/assets/rectangle2.png')",
-                                               backgroundColor : "#ECECEE", 
-                                               backgroundSize: "100vh",
-                                               backgroundRepeat:"no-repeat",
-                                               backgroundPosition:"right",
-                                               width : "1440px",
-                                               height : "1024px",
-                                               top : "116px",
-                                               left : "155px" }}>
-          <AppBar position="static" sx={{ backgroundColor :"#8CAE34"}}>
-            <Toolbar className="flex justify-between">
-              <Typography variant="h6" sx={{ fontFamily : "serif", fontWeight:"bold"}}>
-                York.IE Calories
-              </Typography>
-            </Toolbar>
-          </AppBar>
+    <div className="min-h-screen" style={{ 
+        backgroundImage: "url('/src/assets/rectangle2.png')",
+        backgroundColor: "#ECECEE", 
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right",
+        width: "100%",
+        minHeight: "100vh",
+        top: "116px",
+        left: "155px"
+    }}>
 
-      <Typography sx={{ width : '752px', height : "446px", top : "159px", left : "104px", padding : "10px", gap : '40px'}}>
-        <div>
-          <Typography variant="h1" sx={{ fontFamily : "inter", fontWeight : "800", fontSize : "44px", lineHeight : "60px", letterSpacing : "0%", color : "#000000", width : "732px", height : "120px"}}>
+      <AppBar position="static" sx={{ backgroundColor :"#8CAE34"}}>
+        <Toolbar className="flex justify-between">
+          <Typography variant="logo" sx={{fontWeight: "800", width: "139px", height: "28px", fontSize: "14px", lineHeight: "28px", letterSpacing: "4%", textAlign: "center", color: "#FFFFFF"}}>
+            York.IE Calories
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      <Box sx={{ width : "752px", padding : "50px" }}>
+        <Typography variant="body2" sx={{fontWeight : "800", fontSize : "44px", lineHeight : "60px"}}>
           Love Food but Worried About Calories? 
-               </Typography> 
-          <br />
-           <Typography variant="h2" sx={{ fontFamily : "inter", fontWeight : "500", fontSize : "30px", lineHeight : "40px", letterSpacing : "0%", color : "#000000", width : "732px", height : "40px"}}>
-                we're are here to help 😄
-                </Typography>
-        </div>
-      </Typography>
+        </Typography>
 
-      <div className="justify-center items-center p-10">
-        <Card className="w-full max-w-2xl shadow-lg rounded-lg p-4 bg-white">
+        <Typography variant="body3" sx={{ fontWeight : "500", fontSize : "30px", lineHeight : "40px", mt: 1 }}>
+          We’re here to Help 🙂
+        </Typography>
 
-          <CardContent>
-            <form onSubmit={formik.handleSubmit} className="space-y-6">
+        
+        <Box mt={4}>
 
-              <Box className="flex gap-4">
-                <TextField
-                  fullWidth
-                  label="Full First Name & Last Name"
-                  name="name"
-                  variant="outlined"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.name && Boolean(formik.errors.name)}
-                  helperText={formik.touched.name && formik.errors.name}
-                />
+          <Paper elevation={2}
+            sx={{ borderRadius: '8px', p: 3, backgroundColor: '#ffffff', boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.1)', maxWidth: 740 }}>
+            <form onSubmit={formik.handleSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle1" gutterBottom>Full Name</Typography>
+                  <TextField
+                    fullWidth
+                    id="name"
+                    name="name"
+                    placeholder="Enter first & last name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                    variant="outlined"
+                    InputProps={{ sx: { height: 50 } }}
+                  />
+                </Grid>
 
-                <TextField
-                  fullWidth
-                  label="Enter Valid Email"
-                  name="email"
-                  variant="outlined"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                />
-              </Box>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle1" gutterBottom>Email</Typography>
+                  <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    placeholder="Enter valid email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                    variant="outlined"
+                    InputProps={{ sx: { height: 50 } }}
+                  />
+                </Grid>
 
-              <Button sx={{ backgroundColor: "black", color: "white" }}
-                variant="contained"
-                type="submit"
-                className="mt-2"
-              >
-                Sign Up
-              </Button>
+                <Grid item xs={12} sm={8} display="flex" alignItems="center">
+                  <Typography variant="body2">
+                    Already have an account? Please{' '}
+                    <Link href="#" underline="hover">Sign In</Link>
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={4} display="flex" justifyContent="flex-end" alignItems="center">
+                  <Button 
+                    type="submit"  
+                    variant="contained" 
+                    sx={{ backgroundColor: 'black', '&:hover': { backgroundColor: '#333' }, borderRadius: 1, px: 3 }}
+                  >
+                    Sign Up
+                  </Button>
+                </Grid>
+              </Grid>
             </form>
-          </CardContent>
+          </Paper>
 
-        </Card>
-      </div>
+        </Box>
+      </Box>
 
     </div>
   );
 }
-
-

@@ -14,6 +14,7 @@ const App = () => {
         <Route path="/" element={<Navigate to={isLoggedIn ? "/upload" : "/register"} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/upload" element={isLoggedIn ? <UploadImage /> : <Navigate to="/register" />} />
+        <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/register" />} />
       </Routes>
     </BrowserRouter>
   );
