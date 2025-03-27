@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, Card, CardContent, TextField, Button, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Card, CardContent, TextField, Button, Box, Avatar } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";   // <--- ADD THIS
+import { useNavigate } from "react-router-dom";  
 
 export default function App() {
 
-  const navigate = useNavigate();  // <--- ADD THIS
+  const navigate = useNavigate(); 
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
@@ -20,40 +20,40 @@ export default function App() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      localStorage.setItem("isLoggedIn", "true");   // <--- SAVE LOGIN
-      navigate("/upload");                         // <--- REDIRECT TO UPLOAD PAGE
+      localStorage.setItem("isLoggedIn", "true");   
+      navigate("/upload");                         
     },
   });
 
   return (
-    <div className="min-h-screen bg-gray-100"
-      style={{
-        backgroundImage: "url('/src/assets/farfalle-pasta-with-meatballs-spinach-sauce-with-fried-chickpeas-removebg-preview.png')",
-        backgroundSize: "100vh",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "right"
-      }}
-    >
+    <div className="min-h-screen" style={{ backgroundImage: "url('/src/assets/rectangle2.png')",
+                                               backgroundColor : "#ECECEE", 
+                                               backgroundSize: "100vh",
+                                               backgroundRepeat:"no-repeat",
+                                               backgroundPosition:"right",
+                                               width : "1440px",
+                                               height : "1024px",
+                                               top : "116px",
+                                               left : "155px" }}>
+          <AppBar position="static" sx={{ backgroundColor :"#8CAE34"}}>
+            <Toolbar className="flex justify-between">
+              <Typography variant="h6" sx={{ fontFamily : "serif", fontWeight:"bold"}}>
+                York.IE Calories
+              </Typography>
+            </Toolbar>
+          </AppBar>
 
-      <AppBar position="static" sx={{ backgroundColor: "green" }}>
-        <Toolbar className="flex justify-between">
-          <Typography variant="h6" sx={{ fontFamily: "serif", fontWeight: "bold" }}>
-            York.IE Calories
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      <div className="justify-between items-center p-10">
+      <Typography sx={{ width : '752px', height : "446px", top : "159px", left : "104px", padding : "10px", gap : '40px'}}>
         <div>
-          <h2 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-4xl dark:text-white">
-            Love Food but Worried About <br /> Calories ?
-          </h2>
+          <Typography variant="h1" sx={{ fontFamily : "inter", fontWeight : "800", fontSize : "44px", lineHeight : "60px", letterSpacing : "0%", color : "#000000", width : "732px", height : "120px"}}>
+          Love Food but Worried About Calories? 
+               </Typography> 
           <br />
-          <h2 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-3xl dark:text-white">
-            We're Here to Help 😄
-          </h2>
+           <Typography variant="h2" sx={{ fontFamily : "inter", fontWeight : "500", fontSize : "30px", lineHeight : "40px", letterSpacing : "0%", color : "#000000", width : "732px", height : "40px"}}>
+                we're are here to help 😄
+                </Typography>
         </div>
-      </div>
+      </Typography>
 
       <div className="justify-center items-center p-10">
         <Card className="w-full max-w-2xl shadow-lg rounded-lg p-4 bg-white">
@@ -103,3 +103,5 @@ export default function App() {
     </div>
   );
 }
+
+
