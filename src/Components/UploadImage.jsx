@@ -25,7 +25,7 @@ export default function UploadPage() {
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await fetch("https://yorkcaloriapp.onrender.com", {
+      const response = await fetch("https://yorkcaloriapp.onrender.com", { //when API Limits reduced then we can see calories.
         method: "POST",
         body: formData,
       });
