@@ -93,7 +93,7 @@ export default function UploadPage() {
 
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="h6" sx={{ fontWeight: "800" }}>
+          <Typography variant="logo" sx={{ fontWeight: "800" }}>
             York.IE Calories
           </Typography>
           <div style={{ display: "flex", gap: "24px", position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
