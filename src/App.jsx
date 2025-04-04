@@ -6,10 +6,10 @@ import Profile from './Components/Profile';
 
 const App = () => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  
 
   return (
     <BrowserRouter>
-    {/* <Profile /> */}
       <Routes>
         <Route path="/" element={<Navigate to={isLoggedIn ? "/upload" : "/register"} />} />
         <Route path="/register" element={<Register />} />
