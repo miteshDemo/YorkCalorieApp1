@@ -83,60 +83,9 @@ const Profile = () => {
             <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>Profile</Button>
           </div>
 
-          <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: "white" }}>
-            <Avatar src={user?.avatarUrl} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black" }}>
-              {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
-            </Avatar>
-          </IconButton>
+          
         </Toolbar>
       </AppBar>
-
-      <Snackbar open={successMessage} autoHideDuration={3000} onClose={handleCloseSuccess}>
-        <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '200%' }}>
-          Profile updated successfully!
-        </Alert>
-      </Snackbar>
-      
-      <Card sx={{ width: "100%", maxWidth: 500, boxShadow: 3, borderRadius: 3, p: 3, backgroundColor: "white", mt: 5 }}>
-        <CardContent>
-          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>Profile</Typography>
-          <div className="space-y-4">
-            <TextField
-              fullWidth
-              label="Name"
-              value={updatedUser.name}
-              onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
-              error={!!errors.name}
-              helperText={errors.name}
-              sx={{ mb: 2 }}
-            />
-
-            <TextField
-              fullWidth
-              label="Email"
-              value={updatedUser.email}
-              onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
-              error={!!errors.email}
-              helperText={errors.email}
-              sx={{ mb: 2 }}
-            />
-
-            <TextField
-              fullWidth
-              label="Avatar URL"
-              value={updatedUser.avatarUrl || ""}
-              onChange={(e) => setUpdatedUser({ ...updatedUser, avatarUrl: e.target.value })}
-              error={!!errors.avatarUrl}
-              helperText={errors.avatarUrl}
-              sx={{ mb: 2 }}
-            />
-
-            <Button variant="contained" fullWidth sx={{ backgroundColor: "black" }} onClick={handleSave}>
-              Update
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
 
       <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
         <Card sx={{ width: 250, p: 2, backgroundColor: "white", height: "100%" }}>

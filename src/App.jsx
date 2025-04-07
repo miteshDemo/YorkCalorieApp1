@@ -3,20 +3,24 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import UploadImage from './Components/UploadImage';
 import Register from './Components/Register';
 import Profile from './Components/Profile';
+import History from './Components/History';
 
 const App = () => {
+
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   
-
   return (
+
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to={isLoggedIn ? "/upload" : "/register"} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/upload" element={isLoggedIn ? <UploadImage /> : <Navigate to="/register" />} />
         <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/register" />} />
+        <Route path="/history" element={isLoggedIn ? <History /> : <Navigate to="/register" />} />
       </Routes>
     </BrowserRouter>
+    
   );
 }
 
