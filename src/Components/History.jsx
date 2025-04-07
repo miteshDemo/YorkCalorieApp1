@@ -15,14 +15,11 @@ const validationSchema = yup.object().shape({
   avatarUrl: yup.string().url("Enter a valid URL").required("Avatar URL is required"),
 });
 
-const Profile = () => {
+const History = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
 
   const [updatedUser, setUpdatedUser] = useState(user || { name: "", email: "", avatarUrl: "" });
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(false);
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -35,31 +32,6 @@ const Profile = () => {
     setUpdatedUser(user);
   }, [user]);
 
-  const handleSave = async () => {
-    try {
-      await validationSchema.validate(updatedUser, { abortEarly: false });
-      setErrors({});
-      dispatch(updateUser(updatedUser));
-      setSuccessMessage(true);
-    } catch (err) {
-      if (err.inner) {
-        const validationErrors = {};
-        err.inner.forEach((e) => {
-          validationErrors[e.path] = e.message;
-        });
-        setErrors(validationErrors);
-      }
-    }
-  };
-
-  const handleCloseSuccess = () => {
-    setSuccessMessage(false);
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());  
-    navigate("/register");  
-  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center" style={{
@@ -82,36 +54,22 @@ const Profile = () => {
             <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/history")}>History</Button>
             <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>Profile</Button>
           </div>
-
-          
         </Toolbar>
       </AppBar>
 
-      <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <Card sx={{ width: 250, p: 2, backgroundColor: "white", height: "100%" }}>
-          <CardContent>
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>User Profile</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
-              <Avatar src={user?.avatarUrl} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black", width: 56, height: 56, mb: 1 }}>
-                {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : 'U')}
-              </Avatar>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{user?.name}</Typography>
-              <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
-            </Box>
-            <Button 
-              fullWidth 
-              variant="outlined" 
-              color="error" 
-              startIcon={<LogoutIcon />} 
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-          </CardContent>
-        </Card>
-      </Drawer>
+      <Typography 
+        variant="h4" 
+        sx={{ 
+          marginTop: "10px", 
+          fontWeight: "bold", 
+          color: "#555", 
+          textAlign: "center" 
+        }}
+      >
+        No scanned Food Now...!
+      </Typography>
     </div>
   );
 };
 
-export default Profile;
+export default History;

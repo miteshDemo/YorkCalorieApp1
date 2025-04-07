@@ -146,7 +146,7 @@ const Profile = () => {
               <Avatar src={user?.avatarUrl} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black", width: 56, height: 56, mb: 1 }}>
                 {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : 'U')}
               </Avatar>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{user?.name}</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Welcome, {user?.name}</Typography>
               <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
             </Box>
             <Button 
