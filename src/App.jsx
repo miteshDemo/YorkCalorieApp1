@@ -1,27 +1,47 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import UploadImage from './Components/UploadImage';
 import Register from './Components/Register';
 import Profile from './Components/Profile';
 import History from './Components/History';
+import Start from './Components/Start'; // Start page (public)
 
 const App = () => {
+  const user = useSelector((state) => state.user.user);
 
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  
   return (
-
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to={isLoggedIn ? "/upload" : "/register"} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/upload" element={isLoggedIn ? <UploadImage /> : <Navigate to="/register" />} />
-        <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/register" />} />
-        <Route path="/history" element={isLoggedIn ? <History /> : <Navigate to="/register" />} />
+        {/* Redirect root based on login status */}
+        <Route
+          path="/"
+          element={user ? <Navigate to="/upload" /> : <Start />}
+        />
+
+        {/* Show Register only when not logged in */}
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to="/upload" replace />}
+        />
+
+        {/* Protected Routes */}
+        <Route
+          path="/upload"
+          element={user ? <UploadImage /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/profile"
+          element={user ? <Profile /> : <Navigate to="/" replace />}
+        />
+        <Route
+          path="/history"
+          element={user ? <History /> : <Navigate to="/" replace />}
+        />
       </Routes>
     </BrowserRouter>
-    
   );
-}
+};
 
 export default App;

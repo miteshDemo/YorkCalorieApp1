@@ -9,7 +9,7 @@ import {
   Grid,
   Link,
   Paper,
-  CircularProgress
+  CircularProgress,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -26,7 +26,6 @@ export default function Register() {
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    // Check localStorage for user info
     const storedUser = localStorage.getItem("user");
     if (user || storedUser) {
       if (storedUser && !user) {
@@ -53,7 +52,6 @@ export default function Register() {
     onSubmit: (values) => {
       setRedirecting(true);
 
-      // Save to Redux and localStorage
       const userData = { name: values.name, email: values.email };
       dispatch(setUser(userData));
       localStorage.setItem("user", JSON.stringify(userData));
@@ -68,31 +66,43 @@ export default function Register() {
     return (
       <motion.div
         initial={{ opacity: 1 }}
-        animate={{ opacity: redirecting ? 0 : 1 }}
-        transition={{ duration: 1.5 }}
+        animate={{
+          opacity: redirecting ? 0 : 1,
+          y: redirecting ? -50 : 0,
+          scale: redirecting ? 0.95 : 1,
+        }}
+        transition={{ duration: 1 }}
+        style={{ height: "100vh", backgroundColor: "#ECECEE" }}
       >
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "100vh",
-            backgroundColor: "#ECECEE",
+            height: "100%",
             flexDirection: "column",
           }}
         >
-          <CircularProgress size={80} thickness={5} color="primary" />
-          <Typography
-            variant="h6"
-            sx={{
-              mt: 2,
-              fontWeight: "bold",
-              opacity: redirecting ? 1 : 0,
-              transition: "opacity 1s ease-in-out",
-            }}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {redirecting ? "Redirecting to Upload Page..." : "Loading..."}
-          </Typography>
+            <CircularProgress size={80} thickness={5} color="primary" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+          >
+            <Typography
+              variant="h6"
+              sx={{ mt: 2, fontWeight: "bold", color: "#333" }}
+            >
+              {redirecting ? "Redirecting to Upload Page..." : "Loading..."}
+            </Typography>
+          </motion.div>
         </Box>
       </motion.div>
     );

@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { 
-  AppBar, Toolbar, Typography, Avatar, Button, TextField, 
-  Card, CardContent, Drawer, IconButton, Snackbar, Alert, Box
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Avatar,
+  Button,
+  TextField,
+  Card,
+  CardContent,
+  Snackbar,
+  Alert,
+  Box,
+  Popover
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { updateUser, logout } from "../redux/userSlice"; 
+import { updateUser, logout } from "../redux/userSlice";
 import LogoutIcon from "@mui/icons-material/Logout";
 import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup.string().email("Enter a valid email").required("Email is required"),
-  avatarUrl: yup.string().url("Enter a valid URL").required("Avatar URL is required"),
+  avatarUrl: yup.string().url("Enter a valid URL").notRequired(),
 });
 
 const Profile = () => {
@@ -21,9 +31,9 @@ const Profile = () => {
   const user = useSelector((state) => state.user.user);
 
   const [updatedUser, setUpdatedUser] = useState(user || { name: "", email: "", avatarUrl: "" });
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
   const [errors, setErrors] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null); // for popover
 
   useEffect(() => {
     if (!user) {
@@ -57,22 +67,34 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logout());  
-    navigate("/register");  
+    dispatch(logout());
+    navigate("/register");
   };
 
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center" style={{
-      backgroundImage: "url('/src/assets/rectangle2.png')",
-      backgroundColor: "#ECECEE",
-      backgroundSize: "100vh",
-      backgroundRepeat: "no-repeat",
-      backgroundPosition: "right",
-      width: "100%",
-      height: "100vh",
-      paddingTop: "64px", 
-    }}>
-      
+    <div
+      className="min-h-screen flex flex-col items-center justify-center"
+      style={{
+        backgroundImage: "url('/src/assets/rectangle2.png')",
+        backgroundColor: "#ECECEE",
+        backgroundSize: "100vh",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right",
+        width: "100%",
+        height: "100vh",
+        paddingTop: "64px",
+      }}
+    >
       <AppBar position="fixed" sx={{ backgroundColor: "#8CAE34", top: 0, left: 0, width: "100%" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography variant="logo" sx={{ fontWeight: "800" }}>York.IE Calories</Typography>
@@ -83,11 +105,11 @@ const Profile = () => {
             <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>Profile</Button>
           </div>
 
-          <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: "white" }}>
-            <Avatar src={user?.avatarUrl} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black" }}>
+          <Button onClick={handleAvatarClick} sx={{ p: 0, minWidth: 0 }}>
+            <Avatar src={user?.avatarUrl || undefined} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black" }}>
               {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
             </Avatar>
-          </IconButton>
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -96,10 +118,22 @@ const Profile = () => {
           Profile updated successfully!
         </Alert>
       </Snackbar>
-      
-      <Card sx={{ width: "100%", maxWidth: 500, boxShadow: 3, borderRadius: 3, p: 3, backgroundColor: "white", mt: 5 }}>
+
+      <Card
+        sx={{
+          width: "100%",
+          maxWidth: 500,
+          boxShadow: 3,
+          borderRadius: 3,
+          p: 3,
+          backgroundColor: "white",
+          mt: 5,
+        }}
+      >
         <CardContent>
-          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>Profile</Typography>
+          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2, fontStyle: "italic" }}>
+            {user?.name}'s Profile
+          </Typography>
           <div className="space-y-4">
             <TextField
               fullWidth
@@ -110,7 +144,6 @@ const Profile = () => {
               helperText={errors.name}
               sx={{ mb: 2 }}
             />
-
             <TextField
               fullWidth
               label="Email"
@@ -120,7 +153,6 @@ const Profile = () => {
               helperText={errors.email}
               sx={{ mb: 2 }}
             />
-
             <TextField
               fullWidth
               label="Avatar URL"
@@ -130,7 +162,6 @@ const Profile = () => {
               helperText={errors.avatarUrl}
               sx={{ mb: 2 }}
             />
-
             <Button variant="contained" fullWidth sx={{ backgroundColor: "black" }} onClick={handleSave}>
               Update
             </Button>
@@ -138,29 +169,43 @@ const Profile = () => {
         </CardContent>
       </Card>
 
-      <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <Card sx={{ width: 250, p: 2, backgroundColor: "white", height: "100%" }}>
-          <CardContent>
-            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>User Profile</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
-              <Avatar src={user?.avatarUrl} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black", width: 56, height: 56, mb: 1 }}>
-                {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : 'U')}
-              </Avatar>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Welcome, {user?.name}</Typography>
-              <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
-            </Box>
-            <Button 
-              fullWidth 
-              variant="outlined" 
-              color="error" 
-              startIcon={<LogoutIcon />} 
+      
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handlePopoverClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        sx={{ mt: 1 }}
+      >
+        <Card sx={{ p: 2, width: 250 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <Avatar
+              src={user?.avatarUrl || undefined}
+              sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black", width: 56, height: 56, mb: 1 }}
+            >
+              {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
+            </Avatar>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Welcome, {user?.name}</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{user?.email}</Typography>
+            <Button
+              fullWidth
+              variant="outlined"
+              color="error"
+              startIcon={<LogoutIcon />}
               onClick={handleLogout}
             >
               Logout
             </Button>
-          </CardContent>
+          </Box>
         </Card>
-      </Drawer>
+      </Popover>
     </div>
   );
 };

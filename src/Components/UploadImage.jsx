@@ -98,7 +98,7 @@ export default function UploadPage() {
         backgroundColor: "#ECECEE",
         backgroundSize: "100vh",
         backgroundRepeat: "no-repeat",
-        backgroundPosition: "right",
+        backgroundPosition: "right top",
         width: "100%",
         maxWidth: "1440px",
         minHeight: "1024px",
@@ -118,20 +118,6 @@ export default function UploadPage() {
             <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/history")}>History</Button>
             <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>Profile</Button>
           </div>
-
-          
-          <IconButton onClick={toggleDrawer}>
-            <Avatar
-              sx={{
-                bgcolor: user?.avatarUrl ? "transparent" : "black",
-                width: 40,
-                height: 40,
-              }}
-              src={user?.avatarUrl || ""}
-            >
-              {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
-            </Avatar>
-          </IconButton>
         </Toolbar>
       </AppBar>
 
