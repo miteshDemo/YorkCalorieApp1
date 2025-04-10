@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -33,7 +27,7 @@ const History = () => {
         paddingTop: "64px",
       }}
     >
-      {/* AppBar */}
+      
       <AppBar
         position="fixed"
         sx={{
@@ -44,7 +38,7 @@ const History = () => {
         }}
       >
         <Toolbar className="flex flex-col md:flex-row justify-between items-center w-full px-4 gap-2">
-          {/* Logo */}
+         
           <Typography
             variant="logo"
             sx={{ fontWeight: "800", fontSize: { xs: "20px", md: "24px" } }}
@@ -53,7 +47,7 @@ const History = () => {
             York.IE Calories
           </Typography>
 
-          {/* Nav Links */}
+         
           <div className="flex flex-wrap justify-center gap-4">
             <Button
               color="inherit"
@@ -80,7 +74,7 @@ const History = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Content */}
+    
       <Typography
         variant="h4"
         className="mt-10 text-center font-bold text-gray-600"

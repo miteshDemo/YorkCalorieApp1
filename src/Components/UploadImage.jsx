@@ -1,20 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Avatar,
-  Button,
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Drawer,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Avatar, Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer } from "@mui/material";
 import { CloudUpload, Logout } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -120,7 +105,7 @@ export default function UploadPage() {
         margin: "0 auto",
       }}
     >
-      {/* Custom Styled AppBar */}
+      
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34", boxShadow: 3 }}>
         <Toolbar className="flex justify-between items-center px-4">
           <Typography
@@ -157,16 +142,16 @@ export default function UploadPage() {
         </Toolbar>
       </AppBar>
 
-      {/* Headline */}
+     
       <Typography
   variant="subtitle1"
   sx={{
     fontWeight: 800,
     fontSize: {
-      xs: "24px",  // mobile
-      sm: "32px",  // small tablets
-      md: "40px",  // medium screens
-      lg: "44px",  // large screens
+      xs: "24px",  
+      sm: "32px",  
+      md: "40px",  
+      lg: "44px",  
     },
     lineHeight: {
       xs: "32px",
@@ -184,7 +169,6 @@ export default function UploadPage() {
 </Typography>
 
 
-      {/* Upload Area */}
       <Typography
         sx={{
           width: "100%",
@@ -234,7 +218,7 @@ export default function UploadPage() {
         )}
       </Typography>
 
-      {/* Display Results */}
+     
       {image && calorieResult.length > 0 && !loading && (
         <div className="mt-8 text-center">
           <img
@@ -282,7 +266,7 @@ export default function UploadPage() {
         </div>
       )}
 
-      {/* Drawer for User Info */}
+     
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
         <Paper sx={{ width: 250, p: 2, height: "100%" }}>
           <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>

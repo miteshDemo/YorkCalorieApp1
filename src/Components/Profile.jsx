@@ -1,22 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Avatar,
-  Button,
-  TextField,
-  Card,
-  CardContent,
-  Snackbar,
-  Alert,
-  Box,
-  Popover,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
+import { AppBar, Toolbar, Typography, Avatar, Button, TextField, Card, CardContent, Snackbar, Alert, Box, Popover, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUser, logout } from "../redux/userSlice";
@@ -53,7 +36,7 @@ const Profile = () => {
   }, [user]);
 
   const handleSave = async () => {
-    // Check if data hasn't changed
+    
     if (
       updatedUser.name === user.name &&
       updatedUser.email === user.email &&
@@ -115,7 +98,7 @@ const Profile = () => {
         paddingTop: "64px",
       }}
     >
-      {/* Top Navigation Bar */}
+      
       <AppBar position="fixed" sx={{ backgroundColor: "#8CAE34", top: 0, left: 0, width: "100%" }}>
         <Toolbar className="flex justify-between items-center px-4">
           <Typography
@@ -148,7 +131,7 @@ const Profile = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Snackbars */}
+      
       <Snackbar open={successMessage} autoHideDuration={3000} onClose={handleCloseSuccess}>
         <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: "100%" }}>
           Profile updated successfully!
@@ -167,7 +150,7 @@ const Profile = () => {
         </Alert>
       </Snackbar>
 
-      {/* Profile Card */}
+    
       <div className="flex justify-center w-full mt-10">
         <Card
           sx={{
@@ -229,7 +212,7 @@ const Profile = () => {
         </Card>
       </div>
 
-      {/* Popover for User Info & Logout */}
+      
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -265,7 +248,7 @@ const Profile = () => {
         </Card>
       </Popover>
 
-      {/* Logout Confirmation Dialog */}
+     
       <Dialog open={confirmLogout} onClose={handleCancelLogout}>
         <DialogTitle>Confirm Logout</DialogTitle>
         <DialogContent>

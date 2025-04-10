@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import {
-  Button,
-  AppBar,
-  Toolbar,
-  Typography,
-  Box,
-  Container,
-  Snackbar,
-  Alert,
-  Fade,
-} from "@mui/material";
+import { Button, AppBar, Toolbar, Typography, Box, Container, Snackbar, Alert, Fade } from "@mui/material";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
@@ -46,7 +36,7 @@ const Home = () => {
         flexDirection: "column",
       }}
     >
-      {/* AppBar */}
+      
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34" }}>
         <Toolbar>
           <Typography
@@ -62,7 +52,7 @@ const Home = () => {
         </Toolbar>
       </AppBar>
 
-      {/* Main content */}
+     
       <Box
         sx={{
           flex: 1,
@@ -138,7 +128,7 @@ const Home = () => {
         </Container>
       </Box>
 
-      {/* Logout Snackbar */}
+    
       <Snackbar
         open={showLogoutMessage}
         autoHideDuration={5000}
