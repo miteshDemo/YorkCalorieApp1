@@ -11,7 +11,11 @@ import {
   Snackbar,
   Alert,
   Box,
-  Popover
+  Popover,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -32,8 +36,11 @@ const Profile = () => {
 
   const [updatedUser, setUpdatedUser] = useState(user || { name: "", email: "", avatarUrl: "" });
   const [successMessage, setSuccessMessage] = useState(false);
+  const [logoutMessage, setLogoutMessage] = useState(false);
+  const [alreadyUpdatedMessage, setAlreadyUpdatedMessage] = useState(false);
   const [errors, setErrors] = useState({});
-  const [anchorEl, setAnchorEl] = useState(null); // for popover
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [confirmLogout, setConfirmLogout] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -46,6 +53,16 @@ const Profile = () => {
   }, [user]);
 
   const handleSave = async () => {
+    // Check if data hasn't changed
+    if (
+      updatedUser.name === user.name &&
+      updatedUser.email === user.email &&
+      (updatedUser.avatarUrl || "") === (user.avatarUrl || "")
+    ) {
+      setAlreadyUpdatedMessage(true);
+      return;
+    }
+
     try {
       await validationSchema.validate(updatedUser, { abortEarly: false });
       setErrors({});
@@ -62,28 +79,32 @@ const Profile = () => {
     }
   };
 
-  const handleCloseSuccess = () => {
-    setSuccessMessage(false);
+  const handleLogout = () => {
+    setConfirmLogout(true);
   };
 
-  const handleLogout = () => {
+  const handleConfirmLogout = () => {
     dispatch(logout());
+    setLogoutMessage(true);
+    setConfirmLogout(false);
     navigate("/register");
   };
 
-  const handleAvatarClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleCancelLogout = () => {
+    setConfirmLogout(false);
   };
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
+  const handleCloseSuccess = () => setSuccessMessage(false);
+  const handleCloseLogout = () => setLogoutMessage(false);
+  const handleCloseAlreadyUpdated = () => setAlreadyUpdatedMessage(false);
 
+  const handleAvatarClick = (event) => setAnchorEl(event.currentTarget);
+  const handlePopoverClose = () => setAnchorEl(null);
   const open = Boolean(anchorEl);
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center"
+      className="min-h-screen flex flex-col items-center justify-center px-4"
       style={{
         backgroundImage: "url('/src/assets/rectangle2.png')",
         backgroundColor: "#ECECEE",
@@ -91,109 +112,146 @@ const Profile = () => {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right",
         width: "100%",
-        height: "100vh",
         paddingTop: "64px",
       }}
     >
+      {/* Top Navigation Bar */}
       <AppBar position="fixed" sx={{ backgroundColor: "#8CAE34", top: 0, left: 0, width: "100%" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Typography variant="logo" sx={{ fontWeight: "800" }}>York.IE Calories</Typography>
+        <Toolbar className="flex justify-between items-center px-4">
+          <Typography
+            variant="logo"
+            className="font-bold text-white"
+            sx={{ fontWeight: "800", fontSize: { xs: "20px", md: "24px" } }}
+          >
+            York.IE Calories
+          </Typography>
 
-          <div style={{ display: "flex", gap: "24px", position: "absolute", left: "50%", transform: "translateX(-50%)" }}>
-            <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/upload")}>Home</Button>
-            <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/history")}>History</Button>
-            <Button color="inherit" sx={{ fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>Profile</Button>
+          <div className="flex items-center gap-4">
+            <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/upload")}>
+              Home
+            </Button>
+            <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/history")}>
+              History
+            </Button>
+            <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>
+              Profile
+            </Button>
+            <Button onClick={handleAvatarClick} sx={{ p: 0, minWidth: 0 }}>
+              <Avatar
+                src={user?.avatarUrl || undefined}
+                sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black", width: 32, height: 32 }}
+              >
+                {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
+              </Avatar>
+            </Button>
           </div>
-
-          <Button onClick={handleAvatarClick} sx={{ p: 0, minWidth: 0 }}>
-            <Avatar src={user?.avatarUrl || undefined} sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black" }}>
-              {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
-            </Avatar>
-          </Button>
         </Toolbar>
       </AppBar>
 
+      {/* Snackbars */}
       <Snackbar open={successMessage} autoHideDuration={3000} onClose={handleCloseSuccess}>
-        <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '200%' }}>
+        <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: "100%" }}>
           Profile updated successfully!
         </Alert>
       </Snackbar>
 
-      <Card
-        sx={{
-          width: "100%",
-          maxWidth: 500,
-          boxShadow: 3,
-          borderRadius: 3,
-          p: 3,
-          backgroundColor: "white",
-          mt: 5,
-        }}
-      >
-        <CardContent>
-          <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2, fontStyle: "italic" }}>
-            {user?.name}'s Profile
-          </Typography>
-          <div className="space-y-4">
-            <TextField
-              fullWidth
-              label="Name"
-              value={updatedUser.name}
-              onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
-              error={!!errors.name}
-              helperText={errors.name}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              label="Email"
-              value={updatedUser.email}
-              onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
-              error={!!errors.email}
-              helperText={errors.email}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              label="Avatar URL"
-              value={updatedUser.avatarUrl || ""}
-              onChange={(e) => setUpdatedUser({ ...updatedUser, avatarUrl: e.target.value })}
-              error={!!errors.avatarUrl}
-              helperText={errors.avatarUrl}
-              sx={{ mb: 2 }}
-            />
-            <Button variant="contained" fullWidth sx={{ backgroundColor: "black" }} onClick={handleSave}>
-              Update
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+      <Snackbar open={logoutMessage} autoHideDuration={3000} onClose={handleCloseLogout}>
+        <Alert onClose={handleCloseLogout} severity="info" sx={{ width: "100%" }}>
+          You have been logged out.
+        </Alert>
+      </Snackbar>
 
-      
+      <Snackbar open={alreadyUpdatedMessage} autoHideDuration={3000} onClose={handleCloseAlreadyUpdated}>
+        <Alert onClose={handleCloseAlreadyUpdated} severity="info" sx={{ width: "100%" }}>
+          Already Updated
+        </Alert>
+      </Snackbar>
+
+      {/* Profile Card */}
+      <div className="flex justify-center w-full mt-10">
+        <Card
+          sx={{
+            width: "100%",
+            maxWidth: 500,
+            boxShadow: 3,
+            borderRadius: 3,
+            p: 3,
+            backgroundColor: "white",
+          }}
+        >
+          <CardContent>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: "bold",
+                mb: 2,
+                fontStyle: "italic",
+                fontSize: { xs: "24px", sm: "30px", md: "36px" },
+              }}
+            >
+              {user?.name}'s Profile
+            </Typography>
+            <div className="space-y-4">
+              <TextField
+                fullWidth
+                label="Name"
+                value={updatedUser.name}
+                onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
+                error={!!errors.name}
+                helperText={errors.name}
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                value={updatedUser.email}
+                onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <TextField
+                fullWidth
+                label="Avatar URL"
+                value={updatedUser.avatarUrl || ""}
+                onChange={(e) => setUpdatedUser({ ...updatedUser, avatarUrl: e.target.value })}
+                error={!!errors.avatarUrl}
+                helperText={errors.avatarUrl}
+              />
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ backgroundColor: "black", mt: 2 }}
+                onClick={handleSave}
+              >
+                Update
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Popover for User Info & Logout */}
       <Popover
         open={open}
         anchorEl={anchorEl}
         onClose={handlePopoverClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
         sx={{ mt: 1 }}
       >
         <Card sx={{ p: 2, width: 250 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Avatar
               src={user?.avatarUrl || undefined}
               sx={{ bgcolor: user?.avatarUrl ? "transparent" : "black", width: 56, height: 56, mb: 1 }}
             >
               {!user?.avatarUrl && (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
             </Avatar>
-            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>Welcome, {user?.name}</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>{user?.email}</Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+              Welcome, {user?.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {user?.email}
+            </Typography>
             <Button
               fullWidth
               variant="outlined"
@@ -206,6 +264,20 @@ const Profile = () => {
           </Box>
         </Card>
       </Popover>
+
+      {/* Logout Confirmation Dialog */}
+      <Dialog open={confirmLogout} onClose={handleCancelLogout}>
+        <DialogTitle>Confirm Logout</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to logout?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancelLogout}>Cancel</Button>
+          <Button onClick={handleConfirmLogout} color="error" variant="contained">
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

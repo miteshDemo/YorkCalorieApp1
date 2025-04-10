@@ -5,8 +5,6 @@ import {
   Typography,
   TextField,
   Button,
-  Box,
-  Grid,
   Link,
   Paper,
   CircularProgress,
@@ -40,7 +38,15 @@ export default function Register() {
 
   const validationSchema = Yup.object({
     name: Yup.string().required("Name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+    .email("Invalid email")
+    .required("Email is required")
+    .test(
+    "no-uppercase",
+    "Email must be in lowercase",
+    (value) => value === value?.toLowerCase()
+  ),
+
   });
 
   const formik = useFormik({
@@ -51,7 +57,6 @@ export default function Register() {
     validationSchema,
     onSubmit: (values) => {
       setRedirecting(true);
-
       const userData = { name: values.name, email: values.email };
       dispatch(setUser(userData));
       localStorage.setItem("user", JSON.stringify(userData));
@@ -74,15 +79,7 @@ export default function Register() {
         transition={{ duration: 1 }}
         style={{ height: "100vh", backgroundColor: "#ECECEE" }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            flexDirection: "column",
-          }}
-        >
+        <div className="flex flex-col justify-center items-center h-full">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -103,7 +100,7 @@ export default function Register() {
               {redirecting ? "Redirecting to Upload Page..." : "Loading..."}
             </Typography>
           </motion.div>
-        </Box>
+        </div>
       </motion.div>
     );
   }
@@ -127,91 +124,82 @@ export default function Register() {
         <Toolbar>
           <Typography
             variant="logo"
-            sx={{ fontWeight: "800", color: "#FFFFFF" }}
+            sx={{
+              fontWeight: 800,
+              color: "#FFFFFF",
+              fontSize: { xs: "20px", sm: "22px", md: "24px" },
+            }}
           >
             York.IE Calories
           </Typography>
         </Toolbar>
       </AppBar>
 
-      <Box sx={{ width: "752px", padding: "40px" }}>
-        <Typography variant="h4" sx={{ fontWeight: "800", mb: 1 }}>
+      <div className="w-full max-w-screen-md px-4 sm:px-6 py-10">
+        <Typography
+          variant="h4"
+          sx={{fontWeight: "800", mb: 1 }}
+        >
           Love Food but Worried About Calories?
         </Typography>
-        <Typography variant="h5" sx={{ fontWeight: "500", mb: 3 }}>
+        <Typography
+          variant="h5"
+          sx={{ fontWeight: "500", mb: 3 }}   
+        >
           We’re here to Help 🙂
         </Typography>
 
         <Paper
           elevation={2}
-          sx={{
-            borderRadius: "8px",
-            p: 3,
-            backgroundColor: "#ffffff",
-            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-            maxWidth: 740,
-          }}
+          className="rounded-lg p-4 sm:p-6 shadow-md"
+          sx={{ backgroundColor: "#ffffff" }}
         >
           <form onSubmit={formik.handleSubmit}>
-            <Grid container spacing={1.5}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  id="name"
-                  name="name"
-                  placeholder="Enter first & last name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  error={formik.touched.name && Boolean(formik.errors.name)}
-                  helperText={formik.touched.name && formik.errors.name}
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  id="email"
-                  name="email"
-                  placeholder="Enter valid email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                  variant="outlined"
-                />
-              </Grid>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <TextField
+                fullWidth
+                label="Full Name"
+                id="name"
+                name="name"
+                placeholder="Enter first & last name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+                variant="outlined"
+              />
+              <TextField
+                fullWidth
+                label="Email"
+                id="email"
+                name="email"
+                placeholder="Enter valid email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                variant="outlined"
+              />
 
-              <Grid item xs={12} sm={8} display="flex" alignItems="center">
-                <Typography variant="body2">
-                  Already have an account? Please{" "}
-                  <Link href="#" underline="hover">
-                    Sign In
-                  </Link>
+              <div className="sm:col-span-1 flex items-center">
+                <Typography variant="body2" sx={{ fontWeight: "bold"}}>
+                  Please Register, If you are New here.
                 </Typography>
-              </Grid>
+              </div>
 
-              <Grid item xs={12} sm={4} display="flex" justifyContent="flex-end">
+              <div className="sm:col-span-1 flex justify-end">
                 <Button
                   type="submit"
                   variant="contained"
-                  sx={{
-                    backgroundColor: "black",
-                    "&:hover": { backgroundColor: "#333" },
-                    borderRadius: 1,
-                    px: 2,
-                    py: 1,
-                    minWidth: "110px",
-                  }}
+                  className="!bg-black hover:!bg-gray-800 px-4 py-2 rounded text-white min-w-[110px]"
                 >
-                  Sign Up
+                  Register
                 </Button>
-              </Grid>
-            </Grid>
+              </div>
+            </div>
           </form>
         </Paper>
-      </Box>
+      </div>
     </motion.div>
   );
 }

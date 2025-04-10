@@ -18,13 +18,11 @@ const Home = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useSelector((state) => state.user.user);
-
   const [showLogoutMessage, setShowLogoutMessage] = useState(false);
 
   useEffect(() => {
     if (location.state?.loggedOut) {
       setShowLogoutMessage(true);
-      
       window.history.replaceState({}, document.title);
     }
   }, [location]);
@@ -48,19 +46,23 @@ const Home = () => {
         flexDirection: "column",
       }}
     >
-      
+      {/* AppBar */}
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34" }}>
-        <Toolbar sx={{ px: 3 }}>
+        <Toolbar>
           <Typography
-            variant="h6"
-            sx={{ fontWeight: "800", color: "#FFFFFF" }}
+            variant="logo"
+            sx={{
+              fontWeight: 800,
+              color: "#FFFFFF",
+              fontSize: { xs: "20px", sm: "22px", md: "24px" },
+            }}
           >
             York.IE Calories
           </Typography>
         </Toolbar>
       </AppBar>
 
-      
+      {/* Main content */}
       <Box
         sx={{
           flex: 1,
@@ -70,6 +72,7 @@ const Home = () => {
           justifyContent: "center",
           textAlign: "center",
           px: 2,
+          py: { xs: 4, md: 8 },
         }}
       >
         <Container maxWidth="sm">
@@ -79,23 +82,46 @@ const Home = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <Typography
-              variant="h3"
               fontWeight="bold"
               fontStyle="italic"
               gutterBottom
-              sx={{ color: "#2e3d49" }}
+              sx={{
+                fontSize: {
+                  xs: "28px",
+                  sm: "36px",
+                  md: "44px",
+                  lg: "52px",
+                },
+                lineHeight: {
+                  xs: "36px",
+                  sm: "44px",
+                  md: "52px",
+                  lg: "60px",
+                },
+                color: "#2e3d49",
+              }}
             >
               Welcome to YORK.IE Calories 🍟
             </Typography>
-            <Typography variant="h6" gutterBottom sx={{ color: "#4a5a6a" }}>
+
+            <Typography
+              sx={{
+                fontSize: { xs: "16px", sm: "18px", md: "20px" },
+                color: "#4a5a6a",
+                mb: { xs: 2, sm: 3 },
+                fontWeight : "bold"
+              }}
+              gutterBottom
+            >
               Snap. Upload. Track your meals 👍
             </Typography>
+
             <Button
               onClick={handleGetStarted}
               variant="contained"
               sx={{
                 mt: 4,
-                fontSize: "1.2rem",
+                fontSize: { xs: "1rem", sm: "1.1rem", md: "1.2rem" },
                 px: 5,
                 py: 1.5,
                 backgroundColor: "#8CAE34",
@@ -112,7 +138,7 @@ const Home = () => {
         </Container>
       </Box>
 
-   
+      {/* Logout Snackbar */}
       <Snackbar
         open={showLogoutMessage}
         autoHideDuration={5000}
