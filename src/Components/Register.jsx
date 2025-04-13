@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, TextField, Button, Link, Paper, CircularProgress } from "@mui/material";
+import { AppBar, Toolbar, Typography, TextField, Button, Link, Paper, CircularProgress, Box } from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -113,16 +113,19 @@ export default function Register() {
     >
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34" }}>
         <Toolbar>
-          <Typography
-            variant="logo"
+        <Box
+            className="rounded-full bg-white text-[#8CAE34] font-bold mr-2"
             sx={{
-              fontWeight: 800,
-              color: "#FFFFFF",
-              fontSize: { xs: "20px", sm: "22px", md: "24px" },
+              width: { xs: 36, sm: 42, md: 48 },
+              height: { xs: 36, sm: 42, md: 48 },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.25rem" },
             }}
           >
-            York.IE Calories
-          </Typography>
+            YC
+          </Box>
         </Toolbar>
       </AppBar>
 

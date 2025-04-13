@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button, AppBar, Toolbar, Typography, Box, Container, Snackbar, Alert, Fade } from "@mui/material";
+import {
+  Button,
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Container,
+  Snackbar,
+  Alert,
+  Fade,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
@@ -36,23 +46,24 @@ const Home = () => {
         flexDirection: "column",
       }}
     >
-      
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34" }}>
         <Toolbar>
-          <Typography
-            variant="logo"
+          <Box
+            className="rounded-full bg-white text-[#8CAE34] font-bold mr-2"
             sx={{
-              fontWeight: 800,
-              color: "#FFFFFF",
-              fontSize: { xs: "20px", sm: "22px", md: "24px" },
+              width: { xs: 36, sm: 42, md: 48 },
+              height: { xs: 36, sm: 42, md: 48 },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.25rem" },
             }}
           >
-            York.IE Calories
-          </Typography>
+            YC
+          </Box>
         </Toolbar>
       </AppBar>
 
-     
       <Box
         sx={{
           flex: 1,
@@ -71,6 +82,21 @@ const Home = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
+            {/* YC Logo Above Heading */}
+            <Box
+              className="rounded-full bg-[#8CAE34] text-white font-bold mx-auto mb-4"
+              sx={{
+                width: { xs: 56, sm: 64 },
+                height: { xs: 56, sm: 64 },
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: { xs: "1.2rem", sm: "1.5rem" },
+              }}
+            >
+              YC
+            </Box>
+
             <Typography
               fontWeight="bold"
               fontStyle="italic"
@@ -88,7 +114,10 @@ const Home = () => {
                   md: "52px",
                   lg: "60px",
                 },
-                color: "#2e3d49",
+                color: "transparent",
+                WebkitTextStroke: "1.2px white",
+                WebkitTextFillColor: "#8CAE34",
+                textShadow: "1px 1px 2px rgba(0,0,0,0.15)",
               }}
             >
               Welcome to YORK.IE Calories 🍟
@@ -99,7 +128,7 @@ const Home = () => {
                 fontSize: { xs: "16px", sm: "18px", md: "20px" },
                 color: "#4a5a6a",
                 mb: { xs: 2, sm: 3 },
-                fontWeight : "bold"
+                fontWeight: "bold",
               }}
               gutterBottom
             >
@@ -128,7 +157,6 @@ const Home = () => {
         </Container>
       </Box>
 
-    
       <Snackbar
         open={showLogoutMessage}
         autoHideDuration={5000}

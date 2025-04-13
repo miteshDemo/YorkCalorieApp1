@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, Avatar, Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer } from "@mui/material";
+import { AppBar, Toolbar, Typography, Avatar, Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer, Box } from "@mui/material";
 import { CloudUpload, Logout } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
@@ -108,16 +108,19 @@ export default function UploadPage() {
       
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34", boxShadow: 3 }}>
         <Toolbar className="flex justify-between items-center px-4">
-          <Typography
-            variant="logo"
-            className="font-bold text-white"
+        <Box
+            className="rounded-full bg-white text-[#8CAE34] font-bold mr-2"
             sx={{
-              fontWeight: "800",
-              fontSize: { xs: "20px", md: "24px" },
+              width: { xs: 36, sm: 42, md: 48 },
+              height: { xs: 36, sm: 42, md: 48 },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.25rem" },
             }}
           >
-            York.IE Calories
-          </Typography>
+            YC
+          </Box>
 
           <div className="flex gap-6">
             <Button
@@ -265,55 +268,6 @@ export default function UploadPage() {
           </Button>
         </div>
       )}
-
-     
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer}>
-        <Paper sx={{ width: 250, p: 2, height: "100%" }}>
-          <Typography variant="h6" sx={{ fontWeight: "bold", mb: 2 }}>
-            User Profile
-          </Typography>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 8,
-            }}
-          >
-            <Avatar
-              src={user?.avatarUrl || ""}
-              sx={{
-                width: 56,
-                height: 56,
-                bgcolor: user?.avatarUrl ? "transparent" : "black",
-                mb: 1,
-              }}
-            >
-              {!user?.avatarUrl &&
-                (user?.name ? user.name.charAt(0).toUpperCase() : "U")}
-            </Avatar>
-            <Typography variant="body1" sx={{ fontWeight: "bold" }}>
-              {user?.name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {user?.email}
-            </Typography>
-          </div>
-          <Button
-            fullWidth
-            variant="outlined"
-            color="error"
-            startIcon={<Logout />}
-            onClick={() => {
-              dispatch(logout());
-              navigate("/register");
-            }}
-            sx={{ mt: 4 }}
-          >
-            Logout
-          </Button>
-        </Paper>
-      </Drawer>
     </div>
   );
 }

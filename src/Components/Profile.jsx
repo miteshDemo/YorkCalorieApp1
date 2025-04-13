@@ -8,7 +8,11 @@ import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  email: yup.string().email("Enter a valid email").required("Email is required"),
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required")
+    .test("is-lowercase", "Email must be in lowercase", (value) => value === value?.toLowerCase()),
   avatarUrl: yup.string().url("Enter a valid URL").notRequired(),
 });
 
@@ -36,7 +40,6 @@ const Profile = () => {
   }, [user]);
 
   const handleSave = async () => {
-    
     if (
       updatedUser.name === user.name &&
       updatedUser.email === user.email &&
@@ -98,16 +101,21 @@ const Profile = () => {
         paddingTop: "64px",
       }}
     >
-      
       <AppBar position="fixed" sx={{ backgroundColor: "#8CAE34", top: 0, left: 0, width: "100%" }}>
         <Toolbar className="flex justify-between items-center px-4">
-          <Typography
-            variant="logo"
-            className="font-bold text-white"
-            sx={{ fontWeight: "800", fontSize: { xs: "20px", md: "24px" } }}
+          <Box
+            className="rounded-full bg-white text-[#8CAE34] font-bold mr-2"
+            sx={{
+              width: { xs: 36, sm: 42, md: 48 },
+              height: { xs: 36, sm: 42, md: 48 },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.25rem" },
+            }}
           >
-            York.IE Calories
-          </Typography>
+            YC
+          </Box>
 
           <div className="flex items-center gap-4">
             <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/upload")}>
@@ -131,7 +139,6 @@ const Profile = () => {
         </Toolbar>
       </AppBar>
 
-      
       <Snackbar open={successMessage} autoHideDuration={3000} onClose={handleCloseSuccess}>
         <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: "100%" }}>
           Profile updated successfully!
@@ -150,7 +157,6 @@ const Profile = () => {
         </Alert>
       </Snackbar>
 
-    
       <div className="flex justify-center w-full mt-10">
         <Card
           sx={{
@@ -187,7 +193,7 @@ const Profile = () => {
                 fullWidth
                 label="Email"
                 value={updatedUser.email}
-                onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+                onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value.toLowerCase() })}
                 error={!!errors.email}
                 helperText={errors.email}
               />
@@ -199,12 +205,7 @@ const Profile = () => {
                 error={!!errors.avatarUrl}
                 helperText={errors.avatarUrl}
               />
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{ backgroundColor: "black", mt: 2 }}
-                onClick={handleSave}
-              >
+              <Button variant="contained" fullWidth sx={{ backgroundColor: "black", mt: 2 }} onClick={handleSave}>
                 Update
               </Button>
             </div>
@@ -212,7 +213,6 @@ const Profile = () => {
         </Card>
       </div>
 
-      
       <Popover
         open={open}
         anchorEl={anchorEl}
@@ -248,7 +248,6 @@ const Profile = () => {
         </Card>
       </Popover>
 
-     
       <Dialog open={confirmLogout} onClose={handleCancelLogout}>
         <DialogTitle>Confirm Logout</DialogTitle>
         <DialogContent>

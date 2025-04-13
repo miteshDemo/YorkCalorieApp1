@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
+import { AppBar, Toolbar, Typography, Button, IconButton, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -39,13 +39,19 @@ const History = () => {
       >
         <Toolbar className="flex flex-col md:flex-row justify-between items-center w-full px-4 gap-2">
          
-          <Typography
-            variant="logo"
-            sx={{ fontWeight: "800", fontSize: { xs: "20px", md: "24px" } }}
-            className="whitespace-nowrap"
+        <Box
+            className="rounded-full bg-white text-[#8CAE34] font-bold mr-2"
+            sx={{
+              width: { xs: 36, sm: 42, md: 48 },
+              height: { xs: 36, sm: 42, md: 48 },
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: { xs: "0.9rem", sm: "1.1rem", md: "1.25rem" },
+            }}
           >
-            York.IE Calories
-          </Typography>
+            YC
+          </Box>
 
          
           <div className="flex flex-wrap justify-center gap-4">
@@ -77,7 +83,7 @@ const History = () => {
     
       <Typography
         variant="h4"
-        className="mt-10 text-center font-bold text-gray-600"
+        sx={{ fontWeight : "bold"}}
       >
         No scanned Food Now...!
       </Typography>
