@@ -27,11 +27,11 @@ export default function UploadPage() {
   const [calorieResult, setCalorieResult] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/upload");
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (!user) {
+      navigate("/upload");
+    }
+  }, [user, navigate]);
 
   const uploadImage = async (file) => {
     setLoading(true);
