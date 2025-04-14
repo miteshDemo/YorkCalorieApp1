@@ -102,7 +102,7 @@ export default function Register() {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 1 }}
       style={{
-        backgroundImage: "url('/src/assets/rectangle2.png')",
+        backgroundImage: "url('/rectangle2.png')",
         backgroundColor: "#ECECEE",
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat",

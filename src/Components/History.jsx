@@ -18,7 +18,7 @@ const History = () => {
     <div
       className="min-h-screen flex flex-col items-center justify-center px-4"
       style={{
-        backgroundImage: "url('/src/assets/rectangle2.png')",
+        backgroundImage: "url('/rectangle2.png')",
         backgroundColor: "#ECECEE",
         backgroundSize: "100vh",
         backgroundRepeat: "no-repeat",
