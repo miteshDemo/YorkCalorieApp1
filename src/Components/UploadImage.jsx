@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, Avatar, Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Drawer, Box } from "@mui/material";
-import { CloudUpload, Logout } from "@mui/icons-material";
+import { AppBar, Toolbar, Typography, Button, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from "@mui/material";
+import { CloudUpload, Cancel } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { logout } from "../redux/userSlice";
+import { useSelector } from "react-redux";
 
 const UploadContainer = styled("div")({
   border: "1px dashed #8CAE34",
@@ -27,8 +26,6 @@ export default function UploadPage() {
   const [image, setImage] = useState(null);
   const [calorieResult, setCalorieResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!user) {
@@ -60,7 +57,6 @@ export default function UploadPage() {
           foodName: item.foodName || "Unknown Food",
           calories: item.calories || "N/A",
         }));
-
         setCalorieResult(formattedData);
       } else {
         setCalorieResult([]);
@@ -86,8 +82,9 @@ export default function UploadPage() {
     setLoading(false);
   };
 
-  const toggleDrawer = () => {
-    setDrawerOpen((prev) => !prev);
+  const handleCancelPreview = () => {
+    setImage(null);
+    setCalorieResult([]);
   };
 
   return (
@@ -105,10 +102,9 @@ export default function UploadPage() {
         margin: "0 auto",
       }}
     >
-      
       <AppBar position="static" sx={{ backgroundColor: "#8CAE34", boxShadow: 3 }}>
         <Toolbar className="flex justify-between items-center px-4">
-        <Box
+          <Box
             className="rounded-full bg-white text-[#8CAE34] font-bold mr-2"
             sx={{
               width: { xs: 36, sm: 42, md: 48 },
@@ -121,56 +117,44 @@ export default function UploadPage() {
           >
             YC
           </Box>
-
           <div className="flex gap-6">
-            <Button
-              sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }}
-              onClick={() => navigate("/upload")}
-            >
+            <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/upload")}>
               Home
             </Button>
-            <Button
-              sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }}
-              onClick={() => navigate("/history")}
-            >
+            <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/history")}>
               History
             </Button>
-            <Button
-              sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }}
-              onClick={() => navigate("/profile")}
-            >
+            <Button sx={{ color: "#fff", fontWeight: "bold", textTransform: "none" }} onClick={() => navigate("/profile")}>
               Profile
             </Button>
           </div>
         </Toolbar>
       </AppBar>
 
-     
       <Typography
-  variant="subtitle1"
-  sx={{
-    fontWeight: 800,
-    fontSize: {
-      xs: "24px",  
-      sm: "32px",  
-      md: "40px",  
-      lg: "44px",  
-    },
-    lineHeight: {
-      xs: "32px",
-      sm: "40px",
-      md: "50px",
-      lg: "60px",
-    },
-    color: "#000000",
-    width: "100%",
-    maxWidth: "732px",
-    padding: { xs: "10px", md: "20px" },
-  }}
->
-  Love Food but Worried About Calories?
-</Typography>
-
+        variant="subtitle1"
+        sx={{
+          fontWeight: 800,
+          fontSize: {
+            xs: "24px",
+            sm: "32px",
+            md: "40px",
+            lg: "44px",
+          },
+          lineHeight: {
+            xs: "32px",
+            sm: "40px",
+            md: "50px",
+            lg: "60px",
+          },
+          color: "#000000",
+          width: "100%",
+          maxWidth: "732px",
+          padding: { xs: "10px", md: "20px" },
+        }}
+      >
+        Love Food but Worried About Calories?
+      </Typography>
 
       <Typography
         sx={{
@@ -194,17 +178,10 @@ export default function UploadPage() {
               <Typography variant="body1" sx={{ fontWeight: "500" }}>
                 Drag or upload your meal pic here
               </Typography>
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: "400", color: "#ADADAD" }}
-              >
+              <Typography variant="body2" sx={{ fontWeight: "400", color: "#ADADAD" }}>
                 or
               </Typography>
-              <Button
-                variant="h5"
-                component="span"
-                sx={{ backgroundColor: "#000000", color: "#FFFFFF" }}
-              >
+              <Button variant="h5" component="span" sx={{ backgroundColor: "#000000", color: "#FFFFFF" }}>
                 <Typography variant="h5">Upload File</Typography>
               </Button>
             </label>
@@ -212,58 +189,50 @@ export default function UploadPage() {
         )}
 
         {loading && (
-          <div
-            className="flex justify-center items-center"
-            style={{ height: "200px" }}
-          >
+          <div className="flex justify-center items-center" style={{ height: "200px" }}>
             <CircularProgress size={60} color="success" />
           </div>
         )}
       </Typography>
 
-     
       {image && calorieResult.length > 0 && !loading && (
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center" style={{ position: "relative" }}>
           <img
             src={image}
             alt="Uploaded"
             className="w-full max-w-xl mx-auto rounded-lg"
           />
-          <TableContainer
-            component={Paper}
+          {/* Cancel Icon */}
+          <Cancel
+            onClick={handleCancelPreview}
             sx={{
-              mt: 4,
-              maxWidth: "600px",
-              margin: "0 auto",
-              border: "1px solid #ccc",
+              position: "absolute",
+              top: "10px",
+              right: "10px",
+              color: "red",
+              cursor: "pointer",
+              fontSize: "2rem",
             }}
-          >
+          />
+          <TableContainer component={Paper} sx={{ mt: 4, maxWidth: "600px", margin: "0 auto", border: "1px solid #ccc" }}>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "bold" }}>
-                    Captured Food
-                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold" }}>Captured Food</TableCell>
                   <TableCell sx={{ fontWeight: "bold" }}>Calories</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {calorieResult.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell sx={{ fontWeight: "bold" }}>
-                      {item.foodName}
-                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold" }}>{item.foodName}</TableCell>
                     <TableCell>{item.calories}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <Button
-            variant="outlined"
-            onClick={handleReupload}
-            sx={{ mt: 2, backgroundColor: "red", color: "white" }}
-          >
+          <Button variant="outlined" onClick={handleReupload} sx={{ mt: 2, backgroundColor: "red", color: "white" }}>
             Re-upload Image
           </Button>
         </div>

@@ -54,7 +54,7 @@ export default function Register() {
 
       setTimeout(() => {
         navigate("/upload");
-      }, 2000);
+      }, 4000);
     },
   });
 
